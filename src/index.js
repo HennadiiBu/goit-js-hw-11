@@ -2,7 +2,7 @@ import { refs } from './partials/refs';
 import { fetchPixabay } from './partials/pixabayAPI';
 import Notiflix from 'notiflix';
 import SimpleLightbox from 'simplelightbox';
-import "simplelightbox/dist/simple-lightbox.min.css";
+import 'simplelightbox/dist/simple-lightbox.min.css';
 
 refs.searchForm.addEventListener('submit', onUserSearchSub);
 refs.loadMoreBtn.addEventListener('click', onClickLoadMore);
@@ -16,7 +16,7 @@ async function onClickLoadMore() {
     Notiflix.Notify.info(
       "We're sorry, but you've reached the end of search results."
     );
-    refs.loadMoreBtn.classList.toggle('hidden')
+    refs.loadMoreBtn.classList.toggle('hidden');
   }
 
   const userSearchValue = localStorage.getItem('userSearch');
@@ -94,11 +94,9 @@ async function onUserSearchSub(event) {
   Notiflix.Notify.info(`Hooray! We found ${totalHits} images.`);
 
   refs.imageContainer.insertAdjacentHTML('beforeend', marckup.join());
-  refs.loadMoreBtn.classList.toggle('hidden')
+  refs.loadMoreBtn.classList.toggle('hidden');
 
-
+  refs.searchForm.reset()
 }
 
-var lightbox = new SimpleLightbox('.photo-card a');
-
-
+var lightbox = new SimpleLightbox('.photo-card a');;
