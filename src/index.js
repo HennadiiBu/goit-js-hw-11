@@ -1,19 +1,17 @@
-import { refs } from './partials/refs';
+import { refs, searchQuery } from './partials/refs';
 import { fetchPixabay } from './partials/pixabayAPI';
 import Notiflix from 'notiflix';
 
-refs.searchBtn.addEventListener('submit', onUserSearchSub);
+refs.searchForm.addEventListener('submit', onUserSearchSub);
 
 async function onUserSearchSub(event) {
   event.preventDefault();
   const { searchQuery } = event.currentTarget.elements;
-  const test = searchQuery.value
-console.log(test)
+
   refs.imageContainer.innerHTML = '';
 
-  const searchResult = await fetchPixabay(test, 1);
-  const { hits } = searchResult;
-  console.log(hits);
+  const { hits } = await fetchPixabay(searchQuery.value, 1);
+
   const marckup = hits.map(
     elem => `
   <div class="photo-card">
@@ -36,8 +34,7 @@ console.log(test)
         ${elem.downloads}
         </p>
     </div>
-</div>
-  `
+  </div>`
   );
 
   refs.imageContainer.insertAdjacentHTML('beforeend', marckup.join());
