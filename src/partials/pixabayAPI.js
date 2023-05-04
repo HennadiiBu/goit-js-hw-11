@@ -9,7 +9,7 @@ import Notiflix from 'notiflix';
 //   safesearch: true,
 //   per_page: 40,
 // });
-
+axios.defaults.baseURL=`https://pixabay.com/api/`
 
 async function fetchPixabay(searchQuery, pageNum = 1) {
   try {
@@ -20,6 +20,7 @@ async function fetchPixabay(searchQuery, pageNum = 1) {
   } catch (e) {
     console.log(e);
   }
+
 }
 
 export { fetchPixabay };
