@@ -10,7 +10,9 @@ let page = 1;
 async function onClickLoadMore() {
   page += 1;
 
-  const { hits } = await fetchPixabay(test, page);
+const userSearchValue = localStorage.getItem('userSearch')
+
+  const { hits } = await fetchPixabay(userSearchValue, page);
 
   const marckup = hits.map(
     elem => `
@@ -42,8 +44,8 @@ async function onClickLoadMore() {
 
 async function onUserSearchSub(event) {
   event.preventDefault();
-  const test = refs.searchForm.children.searchQuery.value;
-  localStorage.setItem('userSearch', test);
+  const userSearchValue = refs.searchForm.children.searchQuery.value;
+  localStorage.setItem('userSearch', userSearchValue);
 
   const { searchQuery } = event.currentTarget.elements;
 
