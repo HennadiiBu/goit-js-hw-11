@@ -1,18 +1,26 @@
-.search-form{
+.search-form {
   display: flex;
   justify-content: center;
   align-items: center;
+gap: 20px;
 
   height: 50px;
+
+  background-color: aquamarine;
 }
 
-.gallery{
+.gallery {
   display: flex;
   justify-content: center;
   align-items: center;
   flex-wrap: wrap;
 }
 
+.load-more {
+  display: flex;
+  margin: 20 auto;
+}
 
-
-
+.hidden{
+  display: none;
+}
