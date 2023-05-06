@@ -11,17 +11,15 @@ let page = 1;
 
 async function onClickLoadMore() {
   page += 1;
+  const userSearchValue = localStorage.getItem('userSearch');
+  const { hits, totalHits } = await fetchPixabay(userSearchValue, page);
 
-  if (page === 13) {
+  if (page > totalHits / 40) {
     Notiflix.Notify.info(
       "We're sorry, but you've reached the end of search results."
     );
     refs.loadMoreBtn.classList.toggle('hidden');
   }
-
-  const userSearchValue = localStorage.getItem('userSearch');
-
-  const { hits } = await fetchPixabay(userSearchValue, page);
 
   const marckup = hits.map(
     elem => `
@@ -55,12 +53,16 @@ async function onClickLoadMore() {
 
 async function onUserSearchSub(event) {
   event.preventDefault();
-  const userSearchValue = refs.searchForm.children.searchQuery.value;
+  refs.imageContainer.innerHTML = '';
+  page = 1;
+  const userSearchValue = refs.searchForm.children.searchQuery.value.trim();
   localStorage.setItem('userSearch', userSearchValue);
 
-  const { searchQuery } = event.currentTarget.elements;
+  if (!userSearchValue) {
+    return;
+  }
 
-  refs.imageContainer.innerHTML = '';
+  const { searchQuery } = event.currentTarget.elements;
 
   const { hits, totalHits } = await fetchPixabay(searchQuery.value, page);
 
@@ -100,7 +102,6 @@ async function onUserSearchSub(event) {
     refs.loadMoreBtn.classList.toggle('hidden');
   }
   refs.imageContainer.insertAdjacentHTML('beforeend', marckup.join());
-
 
   refs.searchForm.reset();
 }
