@@ -4,6 +4,8 @@ import Notiflix from 'notiflix';
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
 
+const lightbox = new SimpleLightbox('#gallery a');
+
 refs.searchForm.addEventListener('submit', onUserSearchSub);
 refs.loadMoreBtn.addEventListener('click', onClickLoadMore);
 
@@ -67,29 +69,31 @@ async function onUserSearchSub(event) {
 
   const marckup = hits.map(
     elem => `
-  <div class="photo-card">
-    <a href="${elem.largeImageURL}">
-      <img class="photo-card__image" src="${elem.webformatURL}" alt="${elem.tags}" width="180px" height="180px" loading="lazy" />
+
+    <div class="photo-card">
+    <a class="photo-card1" href="${elem.largeImageURL}">
+        <img class="photo-card__image" src="${elem.webformatURL}" alt="${elem.tags}" width="180px" height="180px" loading="lazy" />
     </a>
-    <div class="info">
-        <p class="info-item">
-            <b>Likes</b>
-            ${elem.likes}
-        </p>
-        <p class="info-item">
-            <b>Views</b>
-            ${elem.views}
-        </p>
-        <p class="info-item">
-            <b>Comments</b>
-            ${elem.comments}
-        </p>
-            <p class="info-item">
-            <b>Downloads</b>
-        ${elem.downloads}
-        </p>
-    </div>
-  </div>`
+
+      <div class="info">
+          <p class="info-item">
+              <b>Likes</b>
+              ${elem.likes}
+          </p>
+          <p class="info-item">
+              <b>Views</b>
+              ${elem.views}
+          </p>
+          <p class="info-item">
+              <b>Comments</b>
+              ${elem.comments}
+          </p>
+              <p class="info-item">
+              <b>Downloads</b>
+          ${elem.downloads}
+          </p>   
+          </div> 
+      </div>`
   );
 
   refs.imageContainer.insertAdjacentHTML('beforeend', marckup.join());
@@ -103,5 +107,3 @@ async function onUserSearchSub(event) {
   }
   refs.searchForm.reset();
 }
-
-// var lightbox = new SimpleLightbox('.photo-card a');
