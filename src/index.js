@@ -1,5 +1,5 @@
-import { refs } from './partials/refs';
-import { fetchPixabay } from './partials/pixabayAPI';
+import { refs } from './js/refs';
+import { fetchPixabay } from './js/pixabayAPI';
 import Notiflix from 'notiflix';
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
@@ -20,11 +20,14 @@ async function onClickLoadMore() {
     Notiflix.Notify.info(
       "We're sorry, but you've reached the end of search results."
     );
-    refs.loadMoreBtn.classList.toggle('hidden');
+    refs.loadMoreBtn.classList.add('hidden');
   }
 
-  const marckup = hits.map(
-    elem => `
+
+
+  const marckup = hits
+    .map(
+      elem => `
   <div class="photo-card">
   <a href="${elem.largeImageURL}">
     <img class="photo-card__image" src="${elem.webformatURL}" alt="${elem.tags}" width="180px" height="180px" loading="lazy" />
@@ -48,27 +51,31 @@ async function onClickLoadMore() {
         </p>
     </div>
   </div>`
-  );
+    )
+    .join(``);
 
-  refs.imageContainer.insertAdjacentHTML('beforeend', marckup.join());
+  refs.imageContainer.insertAdjacentHTML('beforeend', marckup);
+  lightbox.refresh();
 }
 
 async function onUserSearchSub(event) {
   event.preventDefault();
-  refs.imageContainer.innerHTML = '';
-  page = 1;
+
   const userSearchValue = refs.searchForm.children.searchQuery.value.trim();
   const { searchQuery } = event.currentTarget.elements;
+  const { hits, totalHits } = await fetchPixabay(searchQuery.value, page);
 
-  localStorage.setItem('userSearch', userSearchValue);
+  refs.loadMoreBtn.classList.add('hidden');
+  refs.imageContainer.innerHTML = '';
+  page = 1;
 
   if (!userSearchValue) {
     return;
   }
-  const { hits, totalHits } = await fetchPixabay(searchQuery.value, page);
 
-  const marckup = hits.map(
-    elem => `
+  const marckup = hits
+    .map(
+      elem => `
 
     <div class="photo-card">
     <a class="photo-card1" href="${elem.largeImageURL}">
@@ -94,16 +101,29 @@ async function onUserSearchSub(event) {
           </p>   
           </div> 
       </div>`
-  );
+    )
+    .join(``);
 
-  refs.imageContainer.insertAdjacentHTML('beforeend', marckup.join());
+  refs.imageContainer.insertAdjacentHTML('beforeend', marckup);
+
   if (totalHits === 0) {
+    refs.loadMoreBtn.classList.add('hidden');
     Notiflix.Notify.failure(
       'Sorry, there are no images matching your search query. Please try again.'
     );
+    refs.searchForm.reset();
+    return;
   } else {
     Notiflix.Notify.success(`Hooray! We found ${totalHits} images.`);
-    refs.loadMoreBtn.classList.toggle('hidden');
+    refs.loadMoreBtn.classList.remove('hidden');
+    localStorage.setItem('userSearch', userSearchValue);
   }
+
+  if (totalHits<=40){
+    refs.loadMoreBtn.classList.add('hidden');
+  }
+
+  lightbox.refresh();
+
   refs.searchForm.reset();
 }

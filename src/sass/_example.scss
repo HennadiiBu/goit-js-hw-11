@@ -1,5 +1,4 @@
 .search-form {
-  // position: fixed;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -21,6 +20,7 @@
   justify-content: center;
   align-items: center;
   flex-wrap: wrap;
+  gap: 20px;
 }
 
 .load-more {
