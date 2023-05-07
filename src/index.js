@@ -23,8 +23,6 @@ async function onClickLoadMore() {
     refs.loadMoreBtn.classList.add('hidden');
   }
 
-
-
   const marckup = hits
     .map(
       elem => `
@@ -63,15 +61,18 @@ async function onUserSearchSub(event) {
 
   const userSearchValue = refs.searchForm.children.searchQuery.value.trim();
   const { searchQuery } = event.currentTarget.elements;
+
+  if (!userSearchValue) {
+    return;
+  }
+
   const { hits, totalHits } = await fetchPixabay(searchQuery.value, page);
 
   refs.loadMoreBtn.classList.add('hidden');
   refs.imageContainer.innerHTML = '';
   page = 1;
 
-  if (!userSearchValue) {
-    return;
-  }
+
 
   const marckup = hits
     .map(
@@ -119,7 +120,7 @@ async function onUserSearchSub(event) {
     localStorage.setItem('userSearch', userSearchValue);
   }
 
-  if (totalHits<=40){
+  if (totalHits <= 40) {
     refs.loadMoreBtn.classList.add('hidden');
   }
 
