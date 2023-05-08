@@ -58,7 +58,8 @@ async function onClickLoadMore() {
 
 async function onUserSearchSub(event) {
   event.preventDefault();
-
+  page = 1;
+  
   const userSearchValue = refs.searchForm.children.searchQuery.value.trim();
   const { searchQuery } = event.currentTarget.elements;
 
@@ -70,7 +71,7 @@ async function onUserSearchSub(event) {
 
   refs.loadMoreBtn.classList.add('hidden');
   refs.imageContainer.innerHTML = '';
-  page = 1;
+
 
 
 
